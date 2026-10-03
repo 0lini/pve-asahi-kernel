@@ -35,6 +35,8 @@ binary-arch:
 	fi
 	mkdir -p $(PACKAGE_DIR)/lib/modules/$(KERNEL_VERSION)
 	rsync -ar /lib/modules/$(KERNEL_VERSION)/ $(PACKAGE_DIR)/lib/modules/$(KERNEL_VERSION)/
+	mkdir -p $(PACKAGE_DIR)/usr/lib
+	rsync -a /usr/lib/linux-image-$(KERNEL_VERSION) $(PACKAGE_DIR)/usr/lib/
 	mkdir -p $(PACKAGE_DIR)/lib/modprobe.d/
 	cp /lib/modprobe.d/blacklist_$(IMAGE_PACKAGE_NAME).conf $(PACKAGE_DIR)/lib/modprobe.d/
 	cp /lib/modprobe.d/proxmox_prevent_autoload_$(IMAGE_PACKAGE_NAME).conf $(PACKAGE_DIR)/lib/modprobe.d/
