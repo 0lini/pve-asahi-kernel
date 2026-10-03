@@ -55,12 +55,12 @@ MODULE_DIRS=$(ZFSDIR)
 # exported to debian/rules via debian/rules.d/dirs.mk
 DIRS=KERNEL_SRC ZFSDIR MODULES
 
-DSC=proxmox-kernel-$(KERNEL_MAJMIN)_$(DEB_VERSION).dsc
+DSC=proxmox-asahi-kernel-$(KERNEL_MAJMIN)_$(DEB_VERSION).dsc
 DST_DEB=$(PACKAGE)_$(DEB_VERSION)_$(ARCH).deb
 SIGNED_TEMPLATE_DEB=$(PACKAGE)-signed-template_$(DEB_VERSION)_$(ARCH).deb
-META_DEB=proxmox-kernel-$(KERNEL_MAJMIN)_$(DEB_VERSION)_$(ARCH).deb
+META_DEB=proxmox-asahi-kernel-$(KERNEL_MAJMIN)_$(DEB_VERSION)_$(ARCH).deb
 HDR_DEB=$(HDRPACKAGE)_$(DEB_VERSION)_$(ARCH).deb
-META_HDR_DEB=proxmox-headers-$(KERNEL_MAJMIN)_$(DEB_VERSION)_$(ARCH).deb
+META_HDR_DEB=proxmox-asahi-headers-$(KERNEL_MAJMIN)_$(DEB_VERSION)_$(ARCH).deb
 USR_HDR_DEB=proxmox-kernel-libc-dev_$(DEB_VERSION)_$(ARCH).deb
 LINUX_TOOLS_DEB=linux-tools-$(KERNEL_MAJMIN)_$(DEB_VERSION)_$(ARCH).deb
 LINUX_TOOLS_DBG_DEB=linux-tools-$(KERNEL_MAJMIN)-dbgsym_$(DEB_VERSION)_$(ARCH).deb
@@ -184,4 +184,4 @@ abi-tmp-$(KVNAME)-$(ARCH):
 .PHONY: clean
 clean:
 	rm -rf *~ proxmox-kernel-[0-9]*/ *.prepared $(KERNEL_CFG_ORG)
-	rm -f *.deb *.dsc *.changes *.buildinfo *.build proxmox-kernel*.tar.*
+	rm -f *.deb *.dsc *.changes *.buildinfo *.build proxmox-asahi-kernel*.tar.*
