@@ -32,14 +32,14 @@ Signed-off-by: Thomas Lamprecht <t.lamprecht@proxmox.com>
  1 file changed, 1 insertion(+)
 
 diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
-index 980b42ea9909074677358763d100ab3caa284e80..12636dedcd2054768c743ea650c9dfda5e6404f5 100644
+index da32a468ae00504c122772a967e5999da6c03abc..1c6b55670a48bd567e0e1bb870f11a046780355a 100644
 --- a/fs/smb/client/smb2ops.c
 +++ b/fs/smb/client/smb2ops.c
-@@ -5164,6 +5164,7 @@ receive_encrypted_standard(struct TCP_Server_Info *server,
+@@ -5088,6 +5088,7 @@ receive_encrypted_standard(struct TCP_Server_Info *server,
  one_more:
  	shdr = (struct smb2_hdr *)buf;
  	next_cmd = le32_to_cpu(shdr->NextCommand);
 +	server->total_read = next_cmd ? next_cmd : pdu_length;
- 
- 	if (*num_mids >= MAX_COMPOUND) {
- 		cifs_server_dbg(VFS, "too many PDUs in compound\n");
+ 	if (next_cmd) {
+ 		if (next_cmd < MID_HEADER_SIZE(server) ||
+ 		    next_cmd > pdu_length ||

@@ -56,19 +56,19 @@ Signed-off-by: Thomas Lamprecht <t.lamprecht@proxmox.com>
  1 file changed, 12 insertions(+), 8 deletions(-)
 
 diff --git a/security/apparmor/af_unix.c b/security/apparmor/af_unix.c
-index 15cb6f7bbc12d60a02cb7b409241db4d64f01ed4..e67001250dc1feab6e1fd0fbd82404b92aa7ee86 100644
+index 795b5fbb3aee551c0aa9590ffa7c1af5fb05b26f..33c9c2ac23b9bcb9cf97979bfd9db4e5f83317bf 100644
 --- a/security/apparmor/af_unix.c
 +++ b/security/apparmor/af_unix.c
-@@ -677,7 +677,7 @@ static void update_sk_ctx(struct sock *sk, struct aa_label *label,
+@@ -676,7 +676,7 @@ static void update_sk_ctx(struct sock *sk, struct aa_label *label,
+ 
  		if (old == plabel) {
- 			rcu_assign_pointer(ctx->peer_lastupdate,
- 					   aa_get_label(plabel));
+ 			rcu_assign_pointer(ctx->peer_lastupdate, plabel);
 -		} else if (aa_label_is_subset(plabel, old)) {
 +		} else if (!old || aa_label_is_subset(plabel, old)) {
- 			rcu_assign_pointer(ctx->peer_lastupdate,
- 					   aa_get_label(plabel));
+ 			rcu_assign_pointer(ctx->peer_lastupdate, plabel);
  			rcu_assign_pointer(ctx->peer, aa_get_label(plabel));
-@@ -695,13 +695,17 @@ static void update_peer_ctx(struct sock *sk, struct aa_sk_ctx *ctx,
+ 			aa_put_label(old);
+@@ -693,13 +693,17 @@ static void update_peer_ctx(struct sock *sk, struct aa_sk_ctx *ctx,
  	spin_lock(&unix_sk(sk)->lock);
  	old = rcu_dereference_protected(ctx->peer,
  					lockdep_is_held(&unix_sk(sk)->lock));

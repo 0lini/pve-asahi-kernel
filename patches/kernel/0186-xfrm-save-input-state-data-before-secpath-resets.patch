@@ -40,10 +40,10 @@ Signed-off-by: Thomas Lamprecht <t.lamprecht@proxmox.com>
  1 file changed, 8 insertions(+), 3 deletions(-)
 
 diff --git a/net/xfrm/xfrm_input.c b/net/xfrm/xfrm_input.c
-index 8f6109eada7eaaf1c70aa2da610523b42d75b50c..5ed87d51392a527358f30919fb32236252737c99 100644
+index 8574cd21f9ce04cf098e7be00246cd4b8cd231ac..84edf9f25c5967a5cfe327bab637638fc14691b7 100644
 --- a/net/xfrm/xfrm_input.c
 +++ b/net/xfrm/xfrm_input.c
-@@ -474,6 +474,7 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
+@@ -473,6 +473,7 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
  	struct xfrm_state *x = NULL;
  	xfrm_address_t *daddr;
  	u32 mark = skb->mark;
@@ -51,7 +51,7 @@ index 8f6109eada7eaaf1c70aa2da610523b42d75b50c..5ed87d51392a527358f30919fb322362
  	unsigned int family = AF_UNSPEC;
  	int decaps = 0;
  	int async = 0;
-@@ -485,6 +486,7 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
+@@ -484,6 +485,7 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
  	if (encap_type < 0 || (xo && (xo->flags & XFRM_GRO || encap_type == 0 ||
  				      encap_type == UDP_ENCAP_ESPINUDP))) {
  		x = xfrm_input_state(skb);
@@ -59,7 +59,7 @@ index 8f6109eada7eaaf1c70aa2da610523b42d75b50c..5ed87d51392a527358f30919fb322362
  
  		if (unlikely(x->km.state != XFRM_STATE_VALID)) {
  			if (x->km.state == XFRM_STATE_ACQ)
-@@ -592,11 +594,13 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
+@@ -591,11 +593,13 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
  
  		x = xfrm_input_state_lookup(net, mark, daddr, spi, nexthdr, family);
  		if (x == NULL) {
@@ -73,7 +73,7 @@ index 8f6109eada7eaaf1c70aa2da610523b42d75b50c..5ed87d51392a527358f30919fb322362
  
  		if (unlikely(x->dir && x->dir != XFRM_SA_DIR_IN)) {
  			secpath_reset(skb);
-@@ -604,6 +608,7 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
+@@ -603,6 +607,7 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
  			xfrm_audit_state_notfound(skb, family, spi, seq);
  			xfrm_state_put(x);
  			x = NULL;
@@ -81,28 +81,28 @@ index 8f6109eada7eaaf1c70aa2da610523b42d75b50c..5ed87d51392a527358f30919fb322362
  			goto drop;
  		}
  
-@@ -728,7 +733,7 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
+@@ -726,7 +731,7 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
+ 		crypto_done = false;
  	} while (!err);
  
- 	rcu_read_lock();
 -	err = xfrm_rcv_cb(skb, family, x->type->proto, 0);
 +	err = xfrm_rcv_cb(skb, family, xfrm_proto, 0);
- 	if (err) {
- 		rcu_read_unlock();
+ 	if (err)
  		goto drop;
-@@ -753,7 +758,7 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
- 			xfrm_gro = xo->flags & XFRM_GRO;
+ 
+@@ -749,7 +754,7 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
  
  		err = -EAFNOSUPPORT;
+ 		rcu_read_lock();
 -		afinfo = xfrm_state_afinfo_get_rcu(x->props.family);
 +		afinfo = xfrm_state_afinfo_get_rcu(family);
  		if (likely(afinfo))
  			err = afinfo->transport_finish(skb, xfrm_gro || async);
- 		if (xfrm_gro) {
-@@ -776,7 +781,7 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
+ 		rcu_read_unlock();
+@@ -773,7 +778,7 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
  drop:
  	if (async)
- 		dev_put(dev);
+ 		dev_put(skb->dev);
 -	xfrm_rcv_cb(skb, family, x && x->type ? x->type->proto : nexthdr, -1);
 +	xfrm_rcv_cb(skb, family, xfrm_proto, -1);
  	kfree_skb(skb);

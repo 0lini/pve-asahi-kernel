@@ -22,18 +22,18 @@ Signed-off-by: Thomas Lamprecht <t.lamprecht@proxmox.com>
  1 file changed, 2 insertions(+), 3 deletions(-)
 
 diff --git a/net/sched/act_ct.c b/net/sched/act_ct.c
-index 70c13e1d2e1c75da6b5606c11ce9ed077fd07b24..2c12133159dbd0ba0da195c24712fc9d6775a92f 100644
+index 5c43a91fb6247da1d2b2fe4b8d81d1c210674a82..bc4f05c7bdbcb82c3cbd6cf748a8f3970797b045 100644
 --- a/net/sched/act_ct.c
 +++ b/net/sched/act_ct.c
-@@ -987,7 +987,6 @@ TC_INDIRECT_SCOPE int tcf_ct_act(struct sk_buff *skb, const struct tc_action *a,
+@@ -975,7 +975,6 @@ TC_INDIRECT_SCOPE int tcf_ct_act(struct sk_buff *skb, const struct tc_action *a,
  	struct nf_hook_state state;
  	int nh_ofs, err, retval;
  	struct tcf_ct_params *p;
 -	bool add_helper = false;
- 	bool skb_is_ours = false;
  	bool skip_add = false;
  	bool defrag = false;
-@@ -1097,14 +1096,14 @@ TC_INDIRECT_SCOPE int tcf_ct_act(struct sk_buff *skb, const struct tc_action *a,
+ 	struct nf_conn *ct;
+@@ -1075,14 +1074,14 @@ TC_INDIRECT_SCOPE int tcf_ct_act(struct sk_buff *skb, const struct tc_action *a,
  		err = __nf_ct_try_assign_helper(ct, p->tmpl, GFP_ATOMIC);
  		if (err)
  			goto drop;
