@@ -7,8 +7,8 @@ proxmox-asahi-kernel-7.0 (7.0.12-1) trixie; urgency=medium
     submodules/ubuntu-kernel.
     Export debian.asahi-arm annotations (flavour asahi-arm). ABI
     7.0.12-1-asahi-pve so asahi-scripts matches linux-image-*asahi*/apple.
-  * Skip the patches that do not apply to the 7.0.12 base, listed with the
-    reason in patches/kernel.skip, and rebase the CVE fixes that do.
+  * Drop the patches that do not apply to the 7.0.12 base or are x86 only,
+    and rebase the CVE fixes that do apply.
   * arm64 only. Enable GENDWARFKSYMS next to PVE MODVERSIONS.
   * Install Apple DTBs for Debian asahi-scripts. Do not Recommend
     asahi-platform-core. Keep grub-efi-arm64.
