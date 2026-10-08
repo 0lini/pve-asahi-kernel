@@ -36,8 +36,6 @@ KERNEL_ARCH_amd64 = x86
 KERNEL_ARCH_arm64 = arm64
 KERNEL_ARCH = $(KERNEL_ARCH_$(ARCH))
 
-KERNEL_FLAVOUR=asahi-arm
-
 SKIPABI=0
 
 BUILD_DIR=proxmox-kernel-$(KERNEL_VER)
@@ -115,14 +113,10 @@ $(KERNEL_SRC).prepared: $(KERNEL_SRC_SUBMODULE) | submodule
 	mkdir -p $(BUILD_DIR)
 	cp -a $(KERNEL_SRC_SUBMODULE) $(BUILD_DIR)/$(KERNEL_SRC)
 	cd $(BUILD_DIR)/$(KERNEL_SRC); git clean -xdfi
-	cd $(BUILD_DIR)/$(KERNEL_SRC); \
-	  DEBIAN=debian.asahi-arm python3 debian/scripts/misc/annotations \
-	    --arch $(ARCH) --flavour $(KERNEL_FLAVOUR) --export >../../$(KERNEL_CFG_ORG)
+	cd $(BUILD_DIR)/$(KERNEL_SRC); DEBIAN=debian.asahi-arm python3 debian/scripts/misc/annotations --arch $(ARCH) --flavour asahi-arm --export >../../$(KERNEL_CFG_ORG)
 	cp $(KERNEL_CFG_ORG) $(BUILD_DIR)/$(KERNEL_SRC)/.config
 	sed -i $(BUILD_DIR)/$(KERNEL_SRC)/Makefile -e 's/^EXTRAVERSION.*$$/EXTRAVERSION=$(EXTRAVERSION)/'
-	rm -rf $(BUILD_DIR)/$(KERNEL_SRC)/debian \
-	       $(BUILD_DIR)/$(KERNEL_SRC)/debian.master \
-	       $(BUILD_DIR)/$(KERNEL_SRC)/debian.asahi-arm
+	rm -rf $(BUILD_DIR)/$(KERNEL_SRC)/debian $(BUILD_DIR)/$(KERNEL_SRC)/debian.master $(BUILD_DIR)/$(KERNEL_SRC)/debian.asahi-arm
 	set -e; cd $(BUILD_DIR)/$(KERNEL_SRC); \
 	  for patch in ../../patches/kernel/*.patch; do \
 	    echo "applying patch '$$patch'"; \
