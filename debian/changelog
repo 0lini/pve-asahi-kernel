@@ -1,3 +1,39 @@
+proxmox-asahi-kernel-7.0 (7.0.12-1) trixie; urgency=medium
+
+  * First release of the Asahi arm64 flavour of the Proxmox VE 7.0 kernel,
+    based on proxmox-kernel-7.0 7.0.14-24.
+
+  * Kernel source: Ubuntu Asahi tag Ubuntu-asahi-arm-7.0.0-1002.2 from
+    https://git.launchpad.net/~ubuntu-asahi/+git/linux-asahi-arm
+    (Linux 7.0.12, asahi-7.0.13-1 on Ubuntu-7.0.0-28.28).
+
+  * Drop the patches that do not apply to the 7.0.12 base:
+    0059 0086 0124 0125 0140 0159 0160 0186 0192 0200 0223 0240.
+
+  * Drop the reverts that only apply in reverse, because the base never
+    carried the reverted change: the r8169 series 0202-0209 and the PCIe
+    2.5GT/s revert 0251. All other patches are kept unchanged.
+
+  * Build the asahi-arm flavour for arm64 only, and name the kernel
+    <version>-asahi-pve so Debian's asahi-scripts match it.
+
+  * Enable GENDWARFKSYMS next to MODVERSIONS for the Rust drivers.
+
+  * Install the Apple DTBs for Debian's asahi-scripts, in the signed
+    kernel package as well.
+
+  * Rename the meta packages to proxmox-asahi-kernel-7.0 and
+    proxmox-asahi-headers-7.0, and the source packages to
+    proxmox-asahi-kernel(-signed)-7.0, so Proxmox's packages cannot
+    replace them.
+
+  * Point zfsonlinux at https://git.proxmox.com/git/zfsonlinux.git
+    (2.4.4-pve1).
+
+  * Remove undefined an-trap requests from the perf man pages.
+
+ -- 0lini <72492483+0lini@users.noreply.github.com>  Sun, 11 Oct 2026 01:48:42 +0200
+
 proxmox-kernel-7.0 (7.0.14-24) trixie; urgency=medium
 
   * fix #7969: PCI: revert a change that made the kernel lift the 2.5GT/s
