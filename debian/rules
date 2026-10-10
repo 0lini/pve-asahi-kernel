@@ -184,6 +184,8 @@ endif
 	    fname="$${i##*/}"; manname="$${fname%.1}"; \
 	    install -m644 "$$i" "debian/$(LINUX_TOOLS_PKG)/usr/share/man/man1/$${manname}_$(KERNEL_MAJMIN).1"; \
 	done
+	# drop DocBook XSL's ".it 1 an-trap", groff no longer defines that macro
+	sed -i '/^\.it 1 an-trap$$/d' debian/$(LINUX_TOOLS_PKG)/usr/share/man/man1/*.1
 	touch $@
 
 .headers_prepare_mark: .config_mark
