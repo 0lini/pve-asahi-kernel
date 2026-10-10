@@ -3,3 +3,6 @@
 # The base config comes from Ubuntu's arm64 annotations which already
 # include good server defaults (NUMA, ACPI, EFI, KVM, NR_CPUS=512).
 # Common PVE options are in config-common.opts.
+
+# Ubuntu Asahi enables RUST, which needs GENDWARFKSYMS to keep MODVERSIONS
+-e CONFIG_GENDWARFKSYMS

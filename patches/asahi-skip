@@ -1,0 +1,42 @@
+# Patches from patches/kernel/ that are not applied on top of Ubuntu Asahi.
+#
+# patches/kernel/ is kept identical to upstream pve-kernel so that merging
+# upstream does not conflict. List one patch file name per line, with the
+# reason in a comment above it. Drop entries once the Asahi base contains the
+# change or the patch applies again.
+#
+# The Proxmox series is based on Ubuntu-7.0.0-39.39 (Linux 7.0.14), while
+# Ubuntu Asahi 7.0.12 is based on Ubuntu-7.0.0-28.28.
+
+# fixes 14b007e17881, which is not in 7.0.12
+0059-block-Fix-start-and-length-check-added-to-iov_iter_e.patch
+# iommu/vt-d: context cache flush code differs (x86 only)
+0086-iommu-vt-d-Flush-context-cache-with-correct-SID-when.patch
+# fixes 41d88484c71c, which is not in 7.0.12 (x86 only)
+0124-x86-mm-pat-Acquire-init_mm-write-lock-on-collapse-to.patch
+# TODO backport: apparmor unix socket peer context code differs
+0125-apparmor-fix-NULL-ctx-peer-derefs-in-unix-socket-ctx.patch
+# TODO backport: smb compound decryption code differs
+0140-smb-client-fix-server-total_read-for-compound-encryp.patch
+# TODO backport: act_ct helper code differs; 0160 depends on 0159
+0159-net-sched-act_ct-remove-add_helper-dead-code.patch
+0160-net-sched-act_ct-fix-helper-UAF-due-to-extensions-re.patch
+# TODO backport: xfrm input state code differs
+0186-xfrm-save-input-state-data-before-secpath-resets.patch
+# TODO backport: posix_cpu_timer_del() differs
+0192-posix-cpu-timers-Prevent-freeing-a-timer-which-is-qu.patch
+# ACPI scan handler code differs
+0200-ACPI-x86-rtc-cmos-Use-platform-device-for-driver-bin.patch
+# revert and partly reapply Ubuntu's r8169 phylink series, not in 7.0.12
+0202-Revert-UBUNTU-SAUCE-r8169-fix-RTL8116af-can-not-ente.patch
+0203-Revert-UBUNTU-SAUCE-r8169-add-ltr-support-for-RTL811.patch
+0204-Revert-UBUNTU-SAUCE-r8169-add-support-for-RTL8127atf.patch
+0205-Revert-UBUNTU-SAUCE-r8169-add-support-for-RTL8116af.patch
+0206-Revert-UBUNTU-SAUCE-r8169-add-support-for-phylink.patch
+0207-Revert-UBUNTU-SAUCE-net-phy-phylink-add-helper-to-mo.patch
+0208-Revert-UBUNTU-SAUCE-r8169-add-speed-in-private-struc.patch
+0209-Reapply-UBUNTU-SAUCE-r8169-add-quirk-for-RTL8116af-S.patch
+# TODO backport: ip_do_fragment() differs
+0219-ip-reject-partial-checksums-covering-network-headers.patch
+# needs 44930446dde4, which is not in 7.0.12
+0223-seg6-set-IPSKB_L3SLAVE-from-IP6SKB_L3SLAVE-on-IPIP-d.patch

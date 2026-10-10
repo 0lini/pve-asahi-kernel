@@ -119,6 +119,9 @@ $(KERNEL_SRC).prepared: $(KERNEL_SRC_SUBMODULE) | submodule
 	rm -rf $(BUILD_DIR)/$(KERNEL_SRC)/debian $(BUILD_DIR)/$(KERNEL_SRC)/debian.master $(BUILD_DIR)/$(KERNEL_SRC)/debian.asahi-arm
 	set -e; cd $(BUILD_DIR)/$(KERNEL_SRC); \
 	  for patch in ../../patches/kernel/*.patch; do \
+	    if grep -qxF "$${patch##*/}" ../../patches/asahi-skip; then \
+	      echo "skipping patch '$$patch' (patches/asahi-skip)"; continue; \
+	    fi; \
 	    echo "applying patch '$$patch'"; \
 	    patch --batch -p1 < "$${patch}"; \
 	  done
